@@ -1,0 +1,13 @@
+{
+	"main": "index.html",
+	"name":"JACKRABBIT-CMS",
+	"window":
+	{
+		"toolbar":false,
+		"frame":false,
+		"icon": "icon.png",
+		"transparent": true,
+		"width":1400,
+		"height":800
+	}
+}
