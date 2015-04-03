@@ -23,12 +23,27 @@ $('.connection-tabs .tab-content:first').show();
 
 	function setConnection() {
 		var name = $('#con-name').val();
-		var data = $('#con-url').val();
+		var url = $('#con-url').val();
+		var data = 'http://' + url;
 		var auth = ''+data+'/jackrabbit-handshake.gif';
+		$('.error-field').removeClass('error-field');
+		$('.connection-helper').remove();
 
 		checkExists(auth, function(exists) {
 		    if(!exists) {
 		    	$('.connections').addClass('shake');
+		    	setTimeout(function(){ 
+		    		$('.shake').removeClass('shake');
+		    	}, 700);
+		    	$("#con-url").addClass('error-field');
+		    	$("<span class='connection-helper'>This should look something like www.YOURWEBSITE.com</span>").insertAfter("#con-url");
+		    } else if(! name) {
+		    	$('.connections').addClass('shake');
+		    	setTimeout(function(){ 
+		    		$('.shake').removeClass('shake');
+		    	}, 700);
+		    	$("#con-name").addClass('error-field');
+		    	$("<span class='connection-helper'>Add a name for this connection</span>").insertAfter("#con-name");
 		    } else {
 				localStorage.setItem(name, data);
 				showConnection();
@@ -45,9 +60,13 @@ $('.connection-tabs .tab-content:first').show();
 
 	$(document.body).on('click', '.remove-list a', function(event) {
 		event.preventDefault();
-		var name = $(this).html();
+		var r = confirm("Are you sure you'd like to remove this?");
+		if (r == true) {
+		    var name = $(this).html();
 		localStorage.removeItem(name);
-		showConnection();		
+		showConnection();
+		}
+		
 	});
 
 	$(document.body).on('click', '.connection-list a', function(event) {
@@ -63,8 +82,11 @@ $('.connection-tabs .tab-content:first').show();
 	});
 
 	function clearAll() {
-		localStorage.clear();
-		showConnection();
+		var r = confirm("Whoa there, do you really want to clear all connections?");
+		if (r == true) {
+			localStorage.clear();
+			showConnection();
+		}
 	}
 
 	function showConnection() {
@@ -73,8 +95,6 @@ $('.connection-tabs .tab-content:first').show();
 		var i = 0;
 		for (i = 0; i <= localStorage.length - 1; i++) {
 			key = localStorage.key(i);
-			//pairs += "<a href='initial-state.html'>" + key + "</a>";
-			// USE THE LINE BELOW FOR ACTUAL LINK
 			pairs += "<a href='" + localStorage.getItem(key) + "/admin?app=true'>" + key + "</a>";
 		}
 		$('.connection-list').html(pairs);
