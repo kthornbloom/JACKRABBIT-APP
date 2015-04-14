@@ -1,11 +1,15 @@
-$('.connection-tabs .tab-content:first').show();
-	$(document.body).on('click', '.connection-tabs .tab', function (event) {
-		var getIndex = $(this).index();
-		$('.connection-tabs .tab-content').hide();
-		$('.tab-current').removeClass('tab-current');
-		$(this).addClass('tab-current');
-		$('.connection-tabs .tab-content:eq('+getIndex+')').show();
-		event.preventDefault();
+	$(document.body).on('click', '.connection-edit', function (event) {
+		$(".connection-list").removeClass().addClass('remove-list');
+		$(this).fadeOut(function(){
+			$('.connection-edit-2').fadeIn();
+		});	
+	});
+
+	$(document.body).on('click', '.connection-edit-2', function (event) {
+		$(".remove-list").removeClass().addClass('connection-list');
+		$(this).fadeOut(function(){
+			$('.connection-edit').fadeIn();
+		});	
 	});
 
 	// Function to check if external image exists
@@ -66,7 +70,7 @@ $('.connection-tabs .tab-content:first').show();
 		localStorage.removeItem(name);
 		showConnection();
 		}
-		
+		event.stopPropagation();
 	});
 
 	$(document.body).on('click', '.connection-list a', function(event) {
